@@ -53,13 +53,19 @@ char *get_random_bytes(long amount, int range){
     FILE *file; 
     file = fopen(u_random, "rb");
     bool finished = false;
-    for (int i = 0; i < 4; i++) { 
-        fread(buffer+i,1,1, file);
-        printf("%x\n", buffer[i]);
-    }
+    for (int i = 0; !finished; i++) { 
 
-    free(buffer);
-    return 'a';
+        fread(buffer+i,1,1, file);
+        if (buffer[i] > range) { 
+            i--;
+            amount++;
+        }
+        amount--;
+    
+        if (amount == 0) finished = true;
+    }
+    //free(buffer);
+    return buffer;
 }
 
 // long generate_letters(long amount)

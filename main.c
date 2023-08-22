@@ -20,7 +20,11 @@ int main(void) {
     }
 
     password = generate_password(&r);
-    get_random_bytes(10, 3);
+    char *s = get_random_bytes(20, 50);
+    for(int i = 0; i < 20; i++) {
+        printf("%x\n", *s);
+        s++;
+    }
 
 
     //#endif
