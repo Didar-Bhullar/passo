@@ -23,4 +23,4 @@ void rules_init(rules *r, uint64_t total_characters,
 
 bool check_rules(rules *r, char *mssg);
 long generate_password(rules *r);
-char *get_random_bytes(long amount, int range);
+void load_bytes(long amount, int range, uint8_t *copier);

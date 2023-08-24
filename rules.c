@@ -34,29 +34,44 @@ bool check_rules(rules *r, char *mssg) {
 }
 
 long generate_password(rules *r){
-    long t_chars = r->total_characters;
-    long n_d = r->n_digits;
-    long n_s = r->n_symbols;
-    bool u_case = r->allow_upper_case;
-    bool repeat = r->allow_repeating;
+    uint8_t *s;
+    int letter_availability = r->allow_upper_case ? 52: 26;
 
-    // bytes needed is total_characters * 2
-    // extra byte needed for random insertion
-    long bytes_needed = t_chars * 2;
-    long letters_needed = t_chars - n_d - n_s;
-    uint8_t letter_availability = u_case ? 52: 26;
+    long letters_needed = r->total_characters - r->n_digits - r->n_symbols;
+    printf("total_characters: %d\n", r->total_characters);
+    printf("n_digits: %d\n", r->n_digits);
+    printf("n_symbols: %d\n", r->n_symbols);
+    printf("letters needed is: %d\n", letters_needed);
+    printf("the letter_avail is: %d\n", letter_availability);
+    // letter range
+    int range =  256 - letter_availability -1;
+    long amount = letters_needed;
+
+    printf("the range is: %d\n", range);
+
+    if (letters_needed != 0) {
+        s = malloc(letters_needed * sizeof(char));
+        load_bytes(letters_needed, range, s);
+
+        for(int i = 0; i < letters_needed; i++) {
+            printf("%x\n", s[i]);
+        }
+    }
+
+    free(s);
+    return 5;
+
 }
 
-char *get_random_bytes(long amount, int range){
-    uint8_t *buffer = malloc(amount * sizeof(char));
-
+void load_bytes(long amount, int range, uint8_t *copier){
     FILE *file; 
     file = fopen(u_random, "rb");
     bool finished = false;
     for (int i = 0; !finished; i++) { 
 
-        fread(buffer+i,1,1, file);
-        if (buffer[i] > range) { 
+        fread(copier+i,1,1, file);
+        if (copier[i] > range) {
+            printf("the buffer is over the range and is: %x\n", copier[i]); 
             i--;
             amount++;
         }
@@ -64,10 +79,4 @@ char *get_random_bytes(long amount, int range){
     
         if (amount == 0) finished = true;
     }
-    //free(buffer);
-    return buffer;
 }
-
-// long generate_letters(long amount)
-// long generate_digits(long amount)
-// long generate_symbols(long amount)
