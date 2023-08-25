@@ -13,6 +13,10 @@ typedef struct rules {
     uint64_t n_symbols;
     bool allow_upper_case;
     bool allow_repeating;
+    char *lower_letters;
+    char *upper_letters;
+    char *symbols;
+    char *digits;
 } rules;
 
 void rules_init(rules *r, uint64_t total_characters, 

@@ -6,6 +6,7 @@
 const char *err_zero_message = "Error: Number of characters must be greater than 0\n";
 const char *err_exceed_message = "Error: Number of symbols and digits cannot exceed the total number of characters\n";
 
+
 void rules_init(rules *r, 
                 uint64_t total_characters, 
                 uint64_t n_digits,
@@ -17,6 +18,11 @@ void rules_init(rules *r,
     r->n_symbols = n_symbols;
     r->allow_upper_case = allow_upper_case;
     r->allow_repeating = allow_repeating;
+
+    r->lower_letters = "abcdefghijklmnopqrstuvwxyz";
+    r->upper_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    r->symbols = "~!@#$%^&*()_+`-={}|[]\\:\"<>?,./";
+    r->digits = "0123456789";
 }
 
 bool check_rules(rules *r, char *mssg) { 
@@ -47,16 +53,54 @@ long generate_password(rules *r){
     int range =  256 - letter_availability -1;
     long amount = letters_needed;
 
-    printf("the range is: %d\n", range);
 
+    // letters
     if (letters_needed != 0) {
         s = malloc(letters_needed * sizeof(char));
         load_bytes(letters_needed, range, s);
 
-        for(int i = 0; i < letters_needed; i++) {
+        //if (letters_needed > 26) { 
+
+        //}
+        //char *letters = (letters_needed > 26) ? 
+
+
+
+        //printf("the range is: %d\n", range);
+        //for(int i = 0; i < letters_needed; i++) {
+            //printf("%x\n", s[i]);
+        //}
+    }
+
+    // symbols
+    if (r->n_digits != 0) { 
+        range = 256 - r->n_digits - 1;
+        s = malloc(r->n_digits * sizeof(char));
+        load_bytes(r->n_digits,range,s);
+
+        //printf("the range is: %d\n", range);
+        //for(int i = 0; i < r->n_digits; i++) {
+            //printf("%x\n", s[i]);
+        //}
+    }
+
+    if (r->n_symbols != 0) { 
+        range = 256 - r->n_symbols - 1;
+        s = malloc(r->n_symbols * sizeof(char));
+        load_bytes(r->n_symbols,range,s);
+
+        printf("the range is: %d\n", range);
+        for(int i = 0; i < r->n_symbols; i++) {
             printf("%x\n", s[i]);
         }
     }
+
+
+
+
+    //for(int i = 0; i < 30; i++){
+        //printf("%c", r->symbols[i]);
+    //}
 
     free(s);
     return 5;
